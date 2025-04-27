@@ -1,0 +1,5 @@
+CREATE TABLE bands(
+	id SERIAL PRIMARY KEY,
+	name VARCHAR NOT NULL,
+	genre VARCHAR
+);
