@@ -60,6 +60,7 @@ VALUES('Omar',35,false,false);
 
 
 
+
 -- JOIN
 SELECT 
 	m.id AS musician_id,
@@ -70,3 +71,55 @@ SELECT
 	b.genre
 FROM musicians m
 FULL JOIN bands b ON b.id = m.band_id;
+
+
+
+-- Many To Many
+DROP TABLE musicians;
+
+
+CREATE TABLE musicians(
+	id SERIAL PRIMARY KEY,
+	name VARCHAR NOT NULL UNIQUE,
+	age INTEGER NOT NULL,
+	sings BOOLEAN,
+	dances BOOLEAN
+);
+
+
+CREATE TABLE musicians_bands(
+	band_id INTEGER REFERENCES bands(id),
+	musician_id INTEGER REFERENCES musicians(id),
+	PRIMARY KEY(band_id, musician_id)
+);
+
+INSERT INTO musicians(name,age,sings,dances)
+VALUES('PauL Mccartney',55,false,true);
+
+
+SELECT * FROM musicians_bands;
+SELECT * FROM musicians;
+SELECT * FROM bands;
+
+
+INSERT INTO musicians_bands(band_id,musician_id)
+VALUES(2,1);
+
+
+
+SELECT 
+	b.id AS band_id,
+	b.name AS band_name,
+	m.id AS musician_id,
+	m.name AS musician_name,
+	m.age,
+	m.sings,
+	m.dances
+FROM musicians_bands mb
+JOIN bands b ON b.id = mb.band_id
+JOIN musicians m ON m.id =mb.musician_id;
+
+
+-- CREATE a new table called songs. A band can have many songs but a song can only
+--  belong to one band
+-- BONUS: write a query to get all the songs in our databse and include the band name with it
